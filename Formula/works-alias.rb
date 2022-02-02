@@ -5,7 +5,7 @@ class WorksAlias < Formula
   include ThorScriptInstallHelper
   desc "$HOME/works 내의 디렉토리들에 대한 순회 및 자동 완성"
   command 'works-alias'
-  version '0.0.1'
+  version '0.0.2'
 
   private
   def works
