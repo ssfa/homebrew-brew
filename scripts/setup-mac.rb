@@ -11,51 +11,56 @@ TS = Time.now
 module SetupMac
   module Helper
     ENV_APPS = %w[direnv nodenv rbenv pyenv pyenv-virtualenv]
-    CUI_APPS = %w[coreutils git ripgrep fzf gh jq bat rb features tldr starship git-flow-avh gitmoji git-lfs openjdk k9s colordiff kube-score]
+    CUI_APPS = %w[coreutils git ripgrep fzf gh jq bat rb features tldr starship git-flow-avh gitmoji git-lfs openjdk colordiff kubernetes-cli kube-score k9s]
     GUI_INSTALL_SCRIPT = <<~BASH
-        brew install --cask google-chrome      # 크롬
-        brew install --cask jetbrains-toolbox  # jetbrains 툴 설치 및 업데이트 관리
-        brew install --cask docker             # docker desktop
-        brew install --cask firefox            # 파폭
-        brew install --cask notion             # Notion 데스크탑 
-        brew install --cask iterm2             # 가장 많이 쓰이는 터미널 소프트웨어
-        brew install --cask sourcetree         # git gui 도구
-        brew install --cask github             # github gui 도구
-        brew install --cask dash               # 개발자 문서 도구
-        brew install --cask visual-studio-code # Visual Studio Code
-        brew install --cask microsoft-office   # MS Office
-        brew install --cask bloomrpc
-        brew install --cask itsycal
-        brew install --cask wireshark
-        brew install --cask altair-graphql-client
-        brew install --cask insomnia
-        brew install --cask eqmac           # 외장 기기 볼륨 조절
-        brew install --cask monitorcontrol  # 외장 모니터 밝기 조절
-        brew install homebrew/cask-fonts/font-d2coding
-        brew install homebrew/cask-fonts/font-jetbrains-mono
-        brew install homebrew/cask-fonts/font-fira-code-nerd-font
-        mas install 803453959  # slack
-        mas install 1333542190 # 1password
-        mas install 869223134  # KakaoTalk
-        mas install 747648890  # Telegram
+      brew install --cask google-chrome      # 크롬
+      brew install --cask jetbrains-toolbox  # jetbrains 툴 설치 및 업데이트 관리
+      brew install --cask docker             # docker desktop
+      brew install --cask firefox            # 파폭
+      brew install --cask notion             # Notion 데스크탑 
+      brew install --cask iterm2             # 가장 많이 쓰이는 터미널 소프트웨어
+      brew install --cask sourcetree         # git gui 도구
+      brew install --cask github             # github gui 도구
+      brew install --cask dash               # 개발자 문서 도구
+      brew install --cask visual-studio-code # Visual Studio Code
+      brew install --cask microsoft-office   # MS Office
+      brew install --cask bloomrpc           # grpc client
+      brew install --cask itsycal            # calendar
+      brew install --cask wireshark          # packet monitor
+      brew install --cask altair-graphql-client # rest client
+      brew install --cask insomnia           # rest client
+      brew install --cask monitorcontrol     # 외장 모니터 밝기 조절, 볼륨 조정
+      brew install homebrew/cask-fonts/font-d2coding
+      brew install homebrew/cask-fonts/font-jetbrains-mono
+      brew install homebrew/cask-fonts/font-fira-code-nerd-font
     BASH
-    MAS_APPS = GUI_INSTALL_SCRIPT.lines.filter{|i| /mas install/ =~ i}.map(&:split).map{|i| i[2]}
-    GUI_APPS = GUI_INSTALL_SCRIPT.lines.filter{|i| /--cask/ =~ i}.map(&:split).map{|i| i[3]}
+
+    MAS_INSTALL_SCRIPT = <<~BASH
+      mas install 803453959  # slack
+      mas install 1333542190 # 1password
+      mas install 869223134  # KakaoTalk
+      mas install 747648890  # Telegram
+    BASH
+
+    MAS_APPS = MAS_INSTALL_SCRIPT.lines.filter { |i| /mas install/ =~ i }.map(&:split).map { |i| i[2] }
+    GUI_APPS = GUI_INSTALL_SCRIPT.lines.filter { |i| /--cask/ =~ i }.map(&:split).map { |i| i[3] }
     GUI_APPS_EXT = %w[google-drive]
 
     def run(cmd)
-      system(cmd.tap{|o| puts Rainbow(o).yellow})
+      system(cmd.tap { |o| puts Rainbow(o).yellow })
     end
 
     def mas_signin?
-      ! `! mas account > /dev/null && echo 'no account'`.include?('no account')
+      !`! mas account > /dev/null && echo 'no account'`.include?('no account')
     end
 
     def brew?
       `command -v brew > /dev/null && echo 'exists'`.include?('exists')
     end
 
-    def ts;TS;end
+    def ts
+      TS;
+    end
 
     def rename_file_if_exists(target)
       if File.exists?(target)
@@ -63,7 +68,7 @@ module SetupMac
         FileUtils.mv target, "#{target}.#{ts.to_i}"
       end
     end
-    
+
     def install_home(filename)
       source = Pathname.new(`brew --prefix setup-mac`.strip) / 'share' / filename
       target = Pathname.new(Dir.home) / filename
@@ -74,6 +79,7 @@ module SetupMac
     def brew_apps
       @brew_apps ||= `brew list`.split.compact
     end
+
     def mas_apps
       @mas_apps ||= `mas list`.lines.map(&:split).map(&:first)
     end
@@ -85,22 +91,22 @@ module SetupMac
           remain: ENV_APPS - brew_apps,
           install_template: "brew install %s",
         },
-        cui:{
+        cui: {
           template: "미설치된 개발 환경앱이 발견되었습니다. %s 설치하시겠습니까? [Y/n]",
           remain: CUI_APPS - brew_apps,
           install_template: "brew install %s",
         },
-        gui:{
+        gui: {
           template: "미설치된 개발 GUI 앱이 발견되었습니다. %s 설치하시겠습니까? (brew 외 방법으로 설치된 경우는 해당 앱만 실패합니다.) [Y/n]",
           remain: GUI_APPS - brew_apps,
           install_template: "brew install --cask %s",
         },
-        mas:{
+        mas: {
           template: "미설치된 맥 앱스토어 앱이 발견되었습니다. %s 설치하시겠습니까? [Y/n]",
           remain: (MAS_APPS - mas_apps),
           install_template: "mas install %s",
         },
-      }.reject{|_,v| v[:remain].empty?}
+      }.reject { |_, v| v[:remain].empty? }
     end
 
   end
@@ -122,6 +128,7 @@ module SetupMac
     end
 
     desc "setup_terminal", "zinit 을 설치하고, .zshrc 세팅한다."
+
     def setup_terminal
       unless brew?
         puts "먼저 Brew 를 설치해주세요."
@@ -135,11 +142,11 @@ module SetupMac
 
       installed = `brew list`.split
       installs = (ENV_APPS + CUI_APPS - installed)
-      installs.each{ |i| run "brew install #{i}" }
+      installs.each { |i| run "brew install #{i}" }
       run "brew install --HEAD goenv"
       installs.include?('gitmoji') && run("NODE_TLS_REJECT_UNAUTHORIZED=0 gitmoji -l > /dev/null 2>&1")
 
-      %w[.zshrc .vimrc].each{ |i| install_home(i) }
+      %w[.zshrc .vimrc].each { |i| install_home(i) }
 
       doctor "env"
       doctor "cui"
@@ -149,21 +156,27 @@ module SetupMac
     end
 
     desc "install_gui_apps", "업무에 필요한 기본 mac gui 프로그램들을 설치한다."
-    def install_gui_apps
-      run('brew install -q mas')
 
+    def install_gui_apps
+      GUI_INSTALL_SCRIPT.lines.map(&:strip).each { |i| run i }
+      doctor "gui"
+    end
+
+    desc "install_mas_apps", "업무에 필요한 기본 mac gui 프로그램들을 설치한다."
+
+    def install_mas_apps
+      run 'brew install -q mas'
       unless mas_signin?
-        run('mas open 803453959')
+        run 'mas open 803453959'
         puts "먼저 Mac App Store 에 로그인해주세요."
         exit 1
       end
 
-      GUI_INSTALL_SCRIPT.lines.map(&:strip).each{|i| run i}
-      doctor("gui")
-      doctor("mas")
+      MAS_INSTALL_SCRIPT.lines.map(&:strip).each { |i| run i }
+      doctor "mas"
     end
-    
-    desc "hint", "문제에 대한 힌트" 
+
+    desc "hint", "문제에 대한 힌트"
     def hint
       puts <<~EOF
         # 자동완성 권한 관련 메세지가 나오면 다음을 실행한다.
@@ -171,8 +184,9 @@ module SetupMac
         compaudit | xargs chmod g-w
       EOF
     end
-    
+
     desc "readme", "도구에 대한 설명"
+
     def readme
       readme = Pathname.new(`brew --prefix setup-mac`.strip) / 'share' / 'setup-mac.readme.md'
       contents = readme.read
@@ -183,14 +197,15 @@ module SetupMac
     end
 
     desc "doctor", "문제점 검출"
-    def doctor(categories=nil)
+
+    def doctor(categories = nil)
       puts Rainbow("환경을 확인합니다.").yellow if categories.nil?
       categories ||= %w[env gui cui mas]
 
-      remain_apps.select{|k,_| categories.include?(k.to_s)}.each do |_, v|
+      remain_apps.select { |k, _| categories.include?(k.to_s) }.each do |_, v|
         apps = v[:remain]
         puts v[:template] % (apps * ',')
-        apps.each{ |i| run(v[:install_template] % i.to_s) } if STDIN.gets.downcase.strip.then{|o| ['y',''].include? o}
+        apps.each { |i| run(v[:install_template] % i.to_s) } if STDIN.gets.downcase.strip.then { |o| ['y', ''].include? o }
       end
     end
 
