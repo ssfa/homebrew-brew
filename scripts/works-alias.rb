@@ -68,7 +68,7 @@ module WorksAlias
     desc 'make_dirs', 'works 밑에 추천할만한 디렉토리들 생성'
     def make_dirs
       require 'fileutils'
-      %w[rust ruby rails go python general typescript flutter android deno node c cpp].each{ |i| FileUtils.mkdir_p(home / i)  }
+      %w[rust ruby rails go python general typescript flutter android deno node c cpp swift].each{ |i| FileUtils.mkdir_p(works / i)  }
     end
   end
 end
