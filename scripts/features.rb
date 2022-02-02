@@ -144,11 +144,11 @@ module Features
       bash_script = <<~SHELL
         command -v f > /dev/null   || alias f='features info' 
         command -v fa > /dev/null  || alias fa="features info -a"
-        command -v ft > /dev/null  || alias fi="features issue_list"
+        command -v fi > /dev/null  || alias fi="features issue_list"
         command -v fsw > /dev/null || alias fsw="git switch \\`features info | fzf --ansi -q open | head -1 | awk '{print \\$1}'\\`"
         command -v ft > /dev/null  || alias ft="features current_issue_title | sed -E 's/ open$//' | tr -d '\\n' | pbcopy"
-        f_list_aliases() { alias | grep "$*" --color=never | sed -e 's/alias //' -e "s/=/::/" -e "s/'//g" | awk -F "::" '{ printf "\\033[1;36m%15s  \\033[2;37m=>\\033[0m  %-8s\\n",$1,$2}'; }
-        features_aliaes(){ f_list_aliases features }
+        fn f_list_aliases() { alias | grep "$*" --color=never | sed -e 's/alias //' -e "s/=/::/" -e "s/'//g" | awk -F "::" '{ printf "\\033[1;36m%15s  \\033[2;37m=>\\033[0m  %-8s\\n",$1,$2}'; }
+        fn features_aliaes(){ f_list_aliases features }
       SHELL
 
       erb = RUBY_VERSION =~ /^2.(4|5)/ ? ERB.new(bash_script, nil, '-') : ERB.new(bash_script, trim_mode: '-')

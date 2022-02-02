@@ -64,6 +64,12 @@ module WorksAlias
       work = command.gsub(/w-/,'')
       puts works.glob("*").select{|i|i.basename.to_s == work}.first.glob('*').select(&:directory?).map(&:basename).map(&:to_s) * "\n"
     end
+
+    desc 'make_dirs', 'works 밑에 추천할만한 디렉토리들 생성'
+    def make_dirs
+      require 'fileutils'
+      %w[rust ruby rails go python general typescript flutter android deno node c cpp].each{ |i| FileUtils.mkdir_p }
+    end
   end
 end
 

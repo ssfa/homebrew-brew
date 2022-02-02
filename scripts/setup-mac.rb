@@ -11,7 +11,7 @@ TS = Time.now
 module SetupMac
   module Helper
     ENV_APPS = %w[direnv nodenv rbenv pyenv pyenv-virtualenv]
-    CUI_APPS = %w[git ripgrep fzf gh jq bat rb features tldr starship git-flow-avh gitmoji git-lfs openjdk k9s colordiff kube-score]
+    CUI_APPS = %w[coreutils git ripgrep fzf gh jq bat rb features tldr starship git-flow-avh gitmoji git-lfs openjdk k9s colordiff kube-score]
     GUI_INSTALL_SCRIPT = <<~BASH
         brew install --cask google-chrome      # 크롬
         brew install --cask jetbrains-toolbox  # jetbrains 툴 설치 및 업데이트 관리
@@ -41,6 +41,7 @@ module SetupMac
     BASH
     MAS_APPS = GUI_INSTALL_SCRIPT.lines.filter{|i| /mas install/ =~ i}.map(&:split).map{|i| i[2]}
     GUI_APPS = GUI_INSTALL_SCRIPT.lines.filter{|i| /--cask/ =~ i}.map(&:split).map{|i| i[3]}
+    GUI_APPS_EXT = %w[google-drive]
 
     def run(cmd)
       system(cmd.tap{|o| puts Rainbow(o).yellow})
@@ -140,8 +141,8 @@ module SetupMac
 
       %w[.zshrc .vimrc].each{ |i| install_home(i) }
 
-      doctor("env")
-      doctor("cui")
+      doctor "env"
+      doctor "cui"
 
       puts Rainbow("새로운 터미널을 열어주세요.").yellow
       run("setup-mac hint")

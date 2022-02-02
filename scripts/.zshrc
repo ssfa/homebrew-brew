@@ -1,5 +1,9 @@
 # version:20220201
 
+[ `uname` = 'Linux' ] && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+[ `uname` = 'Darwin' ] && [[ -f /usr/local/bin/brew ]] && eval $(/usr/local/bin/brew shellenv)
+[ `uname` = 'Darwin' ] && [[ -f /opt/homebrew/bin/brew ]] && eval $(/opt/homebrew/bin/brew shellenv)
+
 # zinit Plugin Manager
 source $(brew --prefix)/opt/zinit/zinit.zsh
 autoload -Uz _zinit
@@ -37,6 +41,7 @@ export LANG=en_US.UTF-8
 # Utilities
 alias cat='bat'
 export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 eval "$(starship init zsh)"
 
 # async evals
@@ -55,4 +60,6 @@ fi
 zinit wait lucid for is-snippet $SNIPPET_FILE
 
 export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+
+[ -f $HOME/.zshrc.local ] && source $HOME/.zshrc.local
 
