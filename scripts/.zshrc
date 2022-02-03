@@ -40,6 +40,7 @@ export LANG=en_US.UTF-8
 
 # Utilities
 alias cat='bat'
+alias l='ll'
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 eval "$(starship init zsh)"
