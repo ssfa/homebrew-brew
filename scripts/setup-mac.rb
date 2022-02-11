@@ -20,25 +20,29 @@ module SetupMac
       'firefox'               => '파폭',
       'notion'                => 'Notion 데스크탑',
       'iterm2'                => '가장 많이 쓰이는 터미널 소프트웨어',
-      'sourcetree'            => 'git gui 도구',
       'dash'                  => '개발자 문서 도구',
       'visual-studio-code'    => 'Visual Studio Code',
       'microsoft-office'      => 'MS Office',
       'bloomrpc'              => 'grpc client',
-      'altair-graphql-client' => 'rest client',
+      'altair-graphql-client' => 'Grpahql client',
       'insomnia'              => 'rest client',
+      'figma'                 => 'Collaborative team software',
+      'monitorcontrol'        => '외장 모니터 밝기 조절, 볼륨 조정',
     }
 
     LEVEL2_CASK_APPS = {
-      'itsycal'         => 'calendar',
-      'wireshark'       => 'packet monitor',
-      'monitorcontrol'  => '외장 모니터 밝기 조절, 볼륨 조정',
-      'notion-enhanced' => 'Notion 데스크탑 커스텀 버전',
-      'google-drive'    => 'Google Drive',
-      'github'          => 'github gui 도구',
       'alt-tab'         => 'Windows-like alt-tab',
+      'github'          => 'github gui 도구',
+      'google-drive'    => 'Google Drive',
+      'itsycal'         => 'calendar',
       'keepingyouawake' => 'Tool to prevent the system from going into sleep mode',
+      'notion-enhanced' => 'Notion 데스크탑 커스텀 버전',
       'rectangle'       => 'Move and resize windows using keyboard shortcuts or snap areas',
+      'sourcetree'      => 'git gui 도구',
+      'wireshark'       => 'packet monitor',
+      'amethyst'        => 'Automatic tiling window manager similar to xmonad',
+      'discord'         => 'Voice and text chat software',
+      'mattermost'      => 'Open-source, self-hosted Slack-alternative',
     }
 
     FONTS = Set[
