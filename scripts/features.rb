@@ -144,7 +144,7 @@ module Features
       bash_script = <<~SHELL
         command -v f > /dev/null   || alias f='features info' 
         command -v fa > /dev/null  || alias fa="features info -a"
-        command -v fil > /dev/null || alias fil="features issue_list"
+        command -v fl > /dev/null  || alias fl="features issue_list"
         command -v fsw > /dev/null || alias fsw="git switch \\`features info | fzf --ansi -q open | head -1 | awk '{print \\$1}'\\`"
         command -v ft > /dev/null  || alias ft="features current_issue_title | sed -E 's/ open$//' | tr -d '\\n' | pbcopy"
         fn f_list_aliases() { alias | grep "$*" --color=never | sed -e 's/alias //' -e "s/=/::/" -e "s/'//g" | awk -F "::" '{ printf "\\033[1;36m%15s  \\033[2;37m=>\\033[0m  %-8s\\n",$1,$2}'; }

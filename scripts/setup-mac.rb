@@ -41,6 +41,9 @@ module SetupMac
       'sourcetree'      => 'git gui 도구',
       'wireshark'       => 'packet monitor',
       'amethyst'        => 'Automatic tiling window manager similar to xmonad',
+    }
+
+    CHAT_CASK_APPS = {
       'discord'         => 'Voice and text chat software',
       'mattermost'      => 'Open-source, self-hosted Slack-alternative',
     }
@@ -60,7 +63,7 @@ module SetupMac
 
     MAS_APPS = MAS_INSTALL_SCRIPT.lines.filter { |i| /mas install/ =~ i }.map(&:split).map { |i| i[2] }
     # GUI_APPS = GUI_INSTALL_SCRIPT.lines.filter { |i| /--cask/ =~ i }.map(&:split).map { |i| i[3] }
-    GUI_APPS = LEVEL1_CASK_APPS.keys + LEVEL2_CASK_APPS.keys
+    GUI_APPS = (LEVEL1_CASK_APPS.keys + LEVEL2_CASK_APPS.keys + CHAT_CASK_APPS.keys).uniq
 
     def run(cmd)
       system(cmd.tap { |o| puts Rainbow(o).yellow })
