@@ -13,39 +13,42 @@ module SetupMac
     ENV_APPS = Set[*%w[direnv nodenv rbenv pyenv pyenv-virtualenv]].to_a
     CUI_APPS = Set[*%w[coreutils git ripgrep fzf gh jq bat rb features tldr starship git-flow-avh gitmoji git-lfs openjdk colordiff kubernetes-cli kube-score k9s]].to_a
 
-    LEVEL1_CASK_APPS = {
-      'google-chrome'         => '크롬',
-      'jetbrains-toolbox'     => 'jetbrains 툴 설치 및 업데이트 관리',
+    CASK_APPS = {
+      # uncategory
       'docker'                => 'docker desktop',
-      'firefox'               => '파폭',
       'notion'                => 'Notion 데스크탑',
+      'notion-enhanced'       => 'Notion 데스크탑 커스텀 버전',
       'iterm2'                => '가장 많이 쓰이는 터미널 소프트웨어',
       'dash'                  => '개발자 문서 도구',
-      'visual-studio-code'    => 'Visual Studio Code',
-      'microsoft-office'      => 'MS Office',
       'bloomrpc'              => 'grpc client',
       'altair-graphql-client' => 'Grpahql client',
       'insomnia'              => 'rest client',
       'figma'                 => 'Collaborative team software',
-      'monitorcontrol'        => '외장 모니터 밝기 조절, 볼륨 조정',
-    }
-
-    LEVEL2_CASK_APPS = {
-      'alt-tab'         => 'Windows-like alt-tab',
-      'github'          => 'github gui 도구',
+      'wireshark'       => 'packet monitor',
       'google-drive'    => 'Google Drive',
+      # browser
+      'google-chrome' => '크롬',
+      'firefox'       => '파폭',
+      # editor
+      'jetbrains-toolbox'  => 'jetbrains 툴 설치 및 업데이트 관리',
+      'Visual-studio-code' => 'Visual Studio Code',
+      'microsoft-office'   => 'MS Office',
+      # windows util
+      'alt-tab'         => 'Windows-like alt-tab',
+      'hiddenbar'       => 'Utility to hide menu bar items',
+      'amethyst'        => 'Automatic tiling window manager similar to xmonad',
+      'rectangle'       => 'Move and resize windows using keyboard shortcuts or snap areas',
+      # bar util
       'itsycal'         => 'calendar',
       'keepingyouawake' => 'Tool to prevent the system from going into sleep mode',
-      'notion-enhanced' => 'Notion 데스크탑 커스텀 버전',
-      'rectangle'       => 'Move and resize windows using keyboard shortcuts or snap areas',
-      'sourcetree'      => 'git gui 도구',
-      'wireshark'       => 'packet monitor',
-      'amethyst'        => 'Automatic tiling window manager similar to xmonad',
-    }
-
-    CHAT_CASK_APPS = {
+      'monitorcontrol'        => '외장 모니터 밝기 조절, 볼륨 조정',
+      # chat
       'discord'         => 'Voice and text chat software',
       'mattermost'      => 'Open-source, self-hosted Slack-alternative',
+    }
+
+    CASK_VERSION_APPS = {
+      'google-chrome-beta' => '크롬',
     }
 
     FONTS = Set[
@@ -62,8 +65,7 @@ module SetupMac
     BASH
 
     MAS_APPS = MAS_INSTALL_SCRIPT.lines.filter { |i| /mas install/ =~ i }.map(&:split).map { |i| i[2] }
-    # GUI_APPS = GUI_INSTALL_SCRIPT.lines.filter { |i| /--cask/ =~ i }.map(&:split).map { |i| i[3] }
-    GUI_APPS = (LEVEL1_CASK_APPS.keys + LEVEL2_CASK_APPS.keys + CHAT_CASK_APPS.keys).uniq
+    GUI_APPS = CASK_APPS.keys
 
     def run(cmd)
       system(cmd.tap { |o| puts Rainbow(o).yellow })
@@ -181,9 +183,8 @@ module SetupMac
     desc "install_gui_apps", "업무에 필요한 기본 mac gui 프로그램들을 설치한다."
 
     def install_gui_apps
-      # GUI_INSTALL_SCRIPT.lines.map(&:strip).each { |i| run i }
-      LEVEL1_CASK_APPS.keys.each { |i| run "brew install --cask %s" % i }
-      LEVEL2_CASK_APPS.keys.each { |i| run "brew install --cask %s" % i }
+      GUI_APPS.each { |i| run "brew install --cask %s" % i }
+      CASK_VERSION_APPS.each { |i| run "brew install --cask /homebrew/cask-versions/%s" % i }
       FONTS.each { |i| run "brew install %s" % i }
       doctor "gui"
     end
