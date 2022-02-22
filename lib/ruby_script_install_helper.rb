@@ -14,7 +14,7 @@ module RubyScriptInstallHelper
     homepage(Dir.chdir(__dir__){url=`git remote get-url origin`.strip; /https/ =~ url ? url : "https://github.com/#{url.split('.com:').last}"})
     url Dir.chdir(__dir__){`git remote get-url origin`.strip}, using: :git, tag: 'main'
 
-    depends_on "ruby@2.7"
+    depends_on "ruby@3.0"
   end
 
   def install
