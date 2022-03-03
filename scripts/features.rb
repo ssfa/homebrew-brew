@@ -38,8 +38,7 @@ module Features
 
     def find_issues(issue_numbers = [], state: 'all', limit: default_limit)
       Array(issue_numbers)
-        .uniq.take(limit.to_i)
-        .each_slice(SIZE_PER_CALL).map do |numbers|
+        .uniq.take(limit.to_i).each_slice(SIZE_PER_CALL).map do |numbers|
         `gh issue list -s #{state} --search "is:issue #{numbers * ' '}" --json number,title,labels,assignees,state 2> /dev/null`
           .then { |o| JSON.parse(o) }
           .to_h { |i| [i['number'].to_s, i.transform_keys { |j| j.to_sym }] }
@@ -51,9 +50,9 @@ module Features
       issue_num
     end
 
-    def load_issues_from_branches(branches)
+    def load_issues_from_branches(branches, state: 'all')
       issue_numbers = branches.map(&method(:issue_num_from_branch)).compact
-      self.issues = find_issues(issue_numbers)
+      self.issues = find_issues(issue_numbers, state: state)
     end
 
     def git_root
@@ -65,9 +64,11 @@ module Features
     end
 
     def issue_title
-      `git branch --show-current`.lines.map(&:strip).tap(&method(:load_issues_from_branches)).map do |branch|
-        issues[issue_num_from_branch(branch)]
-      end.map { |issue| make_title(issue) }.first
+      `git branch --show-current`
+        .lines.map(&:strip)
+        .tap(&method(:load_issues_from_branches))
+        .map { |branch| issues[issue_num_from_branch(branch)] }
+        .map { |issue| make_title(issue) }.first
     end
   end
 
@@ -90,16 +91,25 @@ module Features
          .to_a.sort_by { |i| i.to_s }.each { |k, v| puts "#{Rainbow(k.to_s.rjust(key_length + 2)).green}: #{v}" }
     end
 
-    desc "info [limit]", "로컬의 전체 브랜치와 관련 이슈를 출력한다.(limit 혹은 env FEATURES_ISSUE_LIMIT 로 최대 숫자 조정)"
-    option :all, aliases: "-a", type: :boolean, desc: '원격의 브랜치도 분석해서 이슈 정보를 출력한다.'
+    desc "info [limit]", "브랜치와 관련 이슈를 출력한다. 기본값: open 이슈만 출력 (limit 혹은 env FEATURES_ISSUE_LIMIT 로 최대 숫자 조정)"
+    option :remote, type: :boolean, desc: '원격의 브랜치 포함'
+    option :all, type: :boolean, desc: 'open, close 모든 이슈 출력한다.'
+    option :close, type: :boolean, desc: 'close 된 이슈만 룰력한다.'
 
     def info(limit = default_limit)
-      `git branch#{" -a" if options[:all]}`
-        .lines.map(&:strip)
-        .select(&method(:issue_num_from_branch))
+      state =
+        case
+        when options[:all] then 'all'
+        when options[:closed] then 'closed'
+        else 'open'
+        end
+
+      `git branch#{" -a" if options[:remote]}`
+        .lines.map(&:strip).select(&method(:issue_num_from_branch))
+        .tap { |branches| load_issues_from_branches(branches, state: state) }
+        .map { |branch| [issues[issue_num_from_branch(branch)], branch.gsub(/^remotes\/origin\//, '')] }
+        .select { |issue, _| issue }
         .take(limit.to_i)
-        .tap(&method(:load_issues_from_branches))
-        .map { |branch| [issues[issue_num_from_branch(branch)], branch] }
         .then { |o| o.size == 0 ? nil : o }
         &.tap do |o|
         max = o.max_by { |_, i| i.size }[1].size
@@ -151,8 +161,8 @@ module Features
       exit 0 unless %w[zsh bash -].include?(shell)
 
       bash_script = <<~SHELL
-        command -v f > /dev/null   || alias f='features info $@' 
-        command -v fa > /dev/null  || alias fa="features info -a"
+        command -v f > /dev/null   || alias f='features info --all $@' 
+        command -v fa > /dev/null  || alias fa="features info --remote $@"
         command -v fl > /dev/null  || alias fl="features issue_list $@"
         command -v fsw > /dev/null || alias fsw="git switch \\`features info | fzf --ansi -q open | head -1 | awk '{print \\$1}'\\`"
         command -v ft > /dev/null  || alias ft="features current_issue_title | sed -E 's/ open$//' | tr -d '\\n' | pbcopy"
