@@ -101,7 +101,7 @@ module Features
         .tap(&method(:load_issues_from_branches))
         .map { |branch| [issues[issue_num_from_branch(branch)], branch] }
         .then { |o| o.size == 0 ? nil : o }
-        .&tap do |o|
+        &.tap do |o|
         max = o.max_by { |_, i| i.size }[1].size
         o.map { |issue, branch| "#{Rainbow(branch.rjust max).yellow} #{make_title(issue)}".strip }.each { |i| puts i }
       end
