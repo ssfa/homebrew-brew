@@ -10,6 +10,7 @@ require 'json'
 module Features
   module Helper
     LIMIT = 200
+    SIZE_PER_CALL = 25
 
     def paint_assignees(assignees)
       assignees ||= []
@@ -36,9 +37,13 @@ module Features
     end
 
     def find_issues(issue_numbers = [], state: 'all', limit: default_limit)
-      `gh issue list -s #{state} --search "is:issue #{Array(issue_numbers) * ' '}" -L #{limit} --json number,title,labels,assignees,state 2> /dev/null`
-        .then { |o| JSON.parse(o) }
-        .to_h { |i| [i['number'].to_s, i.transform_keys { |j| j.to_sym }] }
+      Array(issue_numbers)
+        .uniq.take(limit.to_i)
+        .each_slice(SIZE_PER_CALL).map do |numbers|
+        `gh issue list -s #{state} --search "is:issue #{numbers * ' '}" --json number,title,labels,assignees,state 2> /dev/null`
+          .then { |o| JSON.parse(o) }
+          .to_h { |i| [i['number'].to_s, i.transform_keys { |j| j.to_sym }] }
+      end.inject({}) { |m, o| m.merge(o) }
     end
 
     def issue_num_from_branch(branch)
@@ -85,14 +90,17 @@ module Features
          .to_a.sort_by { |i| i.to_s }.each { |k, v| puts "#{Rainbow(k.to_s.rjust(key_length + 2)).green}: #{v}" }
     end
 
-    desc "info", "로컬의 전체 브랜치와 관련 이슈를 출력한다."
+    desc "info [limit]", "로컬의 전체 브랜치와 관련 이슈를 출력한다.(limit 혹은 env FEATURES_ISSUE_LIMIT 로 최대 숫자 조정)"
     option :all, aliases: "-a", type: :boolean, desc: '원격의 브랜치도 분석해서 이슈 정보를 출력한다.'
 
-    def info
-      `git branch#{" -a" if options[:all]}`.lines.map(&:strip).tap(&method(:load_issues_from_branches)).map do |branch|
-        issue_num = issue_num_from_branch(branch)
-        [issues[issue_num], branch]
-      end.then do |o|
+    def info(limit = default_limit)
+      `git branch#{" -a" if options[:all]}`
+        .lines.map(&:strip)
+        .select(&method(:issue_num_from_branch))
+        .take(limit.to_i)
+        .tap(&method(:load_issues_from_branches))
+        .map { |branch| [issues[issue_num_from_branch(branch)], branch] }
+        .tap do |o|
         max = o.max_by { |_, i| i.size }[1].size
         o.map { |issue, branch| "#{Rainbow(branch.rjust max).yellow} #{make_title(issue)}".strip }.each { |i| puts i }
       end
@@ -142,7 +150,7 @@ module Features
       exit 0 unless %w[zsh bash -].include?(shell)
 
       bash_script = <<~SHELL
-        command -v f > /dev/null   || alias f='features info' 
+        command -v f > /dev/null   || alias f='features info $@' 
         command -v fa > /dev/null  || alias fa="features info -a"
         command -v fl > /dev/null  || alias fl="features issue_list $@"
         command -v fsw > /dev/null || alias fsw="git switch \\`features info | fzf --ansi -q open | head -1 | awk '{print \\$1}'\\`"
