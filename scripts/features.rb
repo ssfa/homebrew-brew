@@ -31,11 +31,11 @@ module Features
       TITLE
     end
 
-    def limit
+    def default_limit
       (ENV['FEATURES_ISSUE_LIMIT'] || LIMIT).to_i
     end
 
-    def find_issues(issue_numbers = [], state: 'all')
+    def find_issues(issue_numbers = [], state: 'all', limit: default_limit)
       `gh issue list -s #{state} --search "is:issue #{Array(issue_numbers) * ' '}" -L #{limit} --json number,title,labels,assignees,state 2> /dev/null`
         .then { |o| JSON.parse(o) }
         .to_h { |i| [i['number'].to_s, i.transform_keys { |j| j.to_sym }] }
@@ -144,7 +144,7 @@ module Features
       bash_script = <<~SHELL
         command -v f > /dev/null   || alias f='features info' 
         command -v fa > /dev/null  || alias fa="features info -a"
-        command -v fl > /dev/null  || alias fl="features issue_list"
+        command -v fl > /dev/null  || alias fl="features issue_list $@"
         command -v fsw > /dev/null || alias fsw="git switch \\`features info | fzf --ansi -q open | head -1 | awk '{print \\$1}'\\`"
         command -v ft > /dev/null  || alias ft="features current_issue_title | sed -E 's/ open$//' | tr -d '\\n' | pbcopy"
         fn f_list_aliases() { alias | grep "$*" --color=never | sed -e 's/alias //' -e "s/=/::/" -e "s/'//g" | awk -F "::" '{ printf "\\033[1;36m%15s  \\033[2;37m=>\\033[0m  %-8s\\n",$1,$2}'; }
@@ -246,10 +246,10 @@ module Features
       end
     end
 
-    desc 'issue_list', 'gh i list 에서 페이저 제거 최근 이슈 출력 env FEATURES_ISSUE_LIMIT 로 최대 숫자 조정'
+    desc 'issue_list [limit]', 'gh i list 에서 페이저 제거 최근 이슈 출력, limit 혹은 env FEATURES_ISSUE_LIMIT 로 최대 숫자 조정'
 
-    def issue_list
-      count = find_issues(state: 'open').each { |_, issue| puts make_title(issue, state: false) }.count
+    def issue_list(limit = default_limit)
+      count = find_issues(state: 'open', limit: limit.to_i).each { |_, issue| puts make_title(issue, state: false) }.count
       puts "Open 이슈 요약은 #{limit}개 까지만 출력합니다. ( env FEATURES_ISSUE_LIMIT 을 조종하세요. )" if count == limit
     end
 
