@@ -9,7 +9,7 @@ require 'json'
 
 module Features
   module Helper
-    LIMIT = 200
+    LIMIT = 100
     SIZE_PER_CALL = 25
 
     def paint_assignees(assignees)
@@ -37,12 +37,17 @@ module Features
     end
 
     def find_issues(issue_numbers = [], state: 'all', limit: default_limit)
-      Array(issue_numbers)
-        .uniq.take(limit.to_i).each_slice(SIZE_PER_CALL).map do |numbers|
-        `gh issue list -s #{state} --search "is:issue #{numbers * ' '}" --json number,title,labels,assignees,state 2> /dev/null`
+      logic = lambda do |numbers, size_per_call|
+        `gh issue list -s #{state} --search "is:issue #{numbers * ' '}" -L #{size_per_call} --json number,title,labels,assignees,state 2> /dev/null`
           .then { |o| JSON.parse(o) }
           .to_h { |i| [i['number'].to_s, i.transform_keys { |j| j.to_sym }] }
-      end.inject({}) { |m, o| m.merge(o) }
+      end
+
+      if issue_numbers.empty?
+        logic.call([], limit)
+      else
+        Array(issue_numbers).uniq.take(limit.to_i).each_slice(SIZE_PER_CALL).map{|numbers| logic.call(numbers, SIZE_PER_CALL)}.inject({}) { |m, o| m.merge(o) }
+      end
     end
 
     def issue_num_from_branch(branch)
