@@ -59,8 +59,14 @@ eval "\$(features init -)"
 EOF
 fi
 zinit wait lucid for is-snippet $SNIPPET_FILE
-
 export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 
 [ -f $HOME/.zshrc.local ] && source $HOME/.zshrc.local
+
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=50000
+SAVEHIST=50000
+setopt hist_ignore_all_dups
+setopt hist_ignore_space
+setopt hist_reduce_blanks
 

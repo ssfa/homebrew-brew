@@ -22,9 +22,7 @@ module Features
       " [#{labels.map { |l| Rainbow(l['name']).color(l['color']) } * ","}]" unless labels.empty?
     end
 
-    def paint_state(state)
-      state.gsub(/OPEN/, Rainbow(' open').green).gsub('CLOSED', Rainbow(' closed').red)
-    end
+    def paint_state(state) = state.gsub(/OPEN/, Rainbow(' open').green).gsub('CLOSED', Rainbow(' closed').red)
 
     def make_title(issue, state: true)
       issue && <<~TITLE.strip
@@ -32,21 +30,32 @@ module Features
       TITLE
     end
 
-    def default_limit
-      (ENV['FEATURES_ISSUE_LIMIT'] || LIMIT).to_i
-    end
+    def default_limit = (ENV['FEATURES_ISSUE_LIMIT'] || LIMIT).to_i
 
     def find_issues(issue_numbers = [], state: 'all', limit: default_limit)
+
       logic = lambda do |numbers, size_per_call|
-        `gh issue list -s #{state} --search "is:issue #{numbers * ' '}" -L #{size_per_call} --json number,title,labels,assignees,state 2> /dev/null`
-          .then { |o| JSON.parse(o) }
-          .to_h { |i| [i['number'].to_s, i.transform_keys { |j| j.to_sym }] }
+        cmds = begin
+                 open_cmd, closed_cmd = %w(open closed).map { %(gh issue list -s #{_1} --search "is:issue #{numbers * ' '}" -L #{size_per_call} --json number,title,labels,assignees,state 2> /dev/null) }
+                 case state
+                 when 'open' then [open_cmd]
+                 when 'closed' then [closed_cmd]
+                 else
+                   [open_cmd, closed_cmd]
+                 end
+
+               end
+
+        cmds.map { `#{_1}` }
+            .map { JSON.parse(_1) }
+            .map { _1.to_h { |i| [i['number'].to_s, i.transform_keys { |j| j.to_sym }] } }
+            .inject(:merge)
       end
 
       if issue_numbers.empty?
         logic.call([], limit)
       else
-        Array(issue_numbers).uniq.take(limit.to_i).each_slice(SIZE_PER_CALL).map{|numbers| logic.call(numbers, SIZE_PER_CALL)}.inject({}) { |m, o| m.merge(o) }
+        Array(issue_numbers).uniq.take(limit.to_i).each_slice(SIZE_PER_CALL).map { |numbers| logic.call(numbers, SIZE_PER_CALL) }.inject({}) { |m, o| m.merge(o) }
       end
     end
 
@@ -60,13 +69,9 @@ module Features
       self.issues = find_issues(issue_numbers, state: state)
     end
 
-    def git_root
-      @git_root ||= Pathname.new('.').expand_path.ascend.find { |i| i && (i / '.git').exist? }
-    end
+    def git_root = @git_root ||= Pathname.new('.').expand_path.ascend.find { |i| i && (i / '.git').exist? }
 
-    def issue_title_path
-      @issue_title_path ||= git_root / '.issue_title'
-    end
+    def issue_title_path = @issue_title_path ||= git_root / '.issue_title'
 
     def issue_title
       `git branch --show-current`
@@ -181,15 +186,11 @@ module Features
 
     desc 'save_issue_title', '.issue_title 에 이슈 제목을 저장한다.'
 
-    def save_issue_title
-      File.open(issue_title_path, 'w') { |f| f.write issue_title }
-    end
+    def save_issue_title = File.open(issue_title_path, 'w') { |f| f.write issue_title }
 
     desc 'current_issue_title', '[DEPRECATED] .issue_title 에 이슈 제목을 저장한다. delete after 2021-06'
 
-    def current_issue_title
-      puts issue_title
-    end
+    def current_issue_title = puts(issue_title)
 
     desc 'githook', '프롬프트에 작업 중인 이슈 제목을 노출하는 기능을 설치한다.'
     option :remove, aliases: "-r", type: :boolean, desc: 'git hook 을 지운다.'
