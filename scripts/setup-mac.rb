@@ -83,7 +83,7 @@ module SetupMac
     end
 
     def install_home(filename)
-      source = Pathname.new(`brew --prefix setup-mac`.strip) / ' share ' / filename
+      source = Pathname.new(`brew --prefix setup-mac`.strip) / 'share' / filename
       target = Pathname.new(Dir.home) / filename
       rename_file_if_exists(target)
       FileUtils.cp source, target
