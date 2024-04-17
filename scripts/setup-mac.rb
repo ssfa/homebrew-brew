@@ -26,6 +26,7 @@ module SetupMac
       'figma'                 => 'Collaborative team software',
       'wireshark'       => 'packet monitor',
       'google-drive'    => 'Google Drive',
+      '1password'       => '1password',
       # browser
       'google-chrome' => '크롬',
       'firefox'       => '파폭',
@@ -57,14 +58,6 @@ module SetupMac
       'homebrew/cask-fonts/font-fira-code-nerd-font'
     ].to_a
 
-    MAS_INSTALL_SCRIPT = <<~BASH
-      mas install 803453959  # slack
-      mas install 1333542190 # 1password
-      mas install 869223134  # KakaoTalk
-      mas install 747648890  # Telegram
-    BASH
-
-    MAS_APPS = MAS_INSTALL_SCRIPT.lines.filter { |i| /mas install/ =~ i }.map(&:split).map { |i| i[2] }
     GUI_APPS = CASK_APPS.keys
 
     def run(cmd)
@@ -84,7 +77,7 @@ module SetupMac
     end
 
     def rename_file_if_exists(target)
-      if File.exists?(target)
+      if File.exist?(target)
         puts Rainbow("[backup] #{target} => #{target}.#{ts.to_i}").aqua
         FileUtils.mv target, "#{target}.#{ts.to_i}"
       end
@@ -121,11 +114,6 @@ module SetupMac
           template:         "미설치된 개발 GUI 앱이 발견되었습니다. %s 설치하시겠습니까? (brew 외 방법으로 설치된 경우는 해당 앱만 실패합니다.) [Y/n]",
           remain:           GUI_APPS - brew_apps,
           install_template: "brew install --cask %s",
-        },
-        mas:   {
-          template:         "미설치된 맥 앱스토어 앱이 발견되었습니다. %s 설치하시겠습니까? [Y/n]",
-          remain:           (MAS_APPS - mas_apps),
-          install_template: "mas install %s",
         },
         fonts: {
           template:         "미설치된 폰트가 발견되었습니다. %s 설치하시겠습니까? [Y/n]",
@@ -187,20 +175,6 @@ module SetupMac
       CASK_VERSION_APPS.each { |i| run "brew install --cask /homebrew/cask-versions/%s" % i }
       FONTS.each { |i| run "brew install %s" % i }
       doctor "gui"
-    end
-
-    desc "install_mas_apps", "업무에 필요한 기본 mac gui 프로그램들을 설치한다."
-
-    def install_mas_apps
-      run ' brew install - q mas '
-      unless mas_signin?
-        run ' mas open 803453959 '
-        puts "먼저 Mac App Store 에 로그인해주세요."
-        exit 1
-      end
-
-      MAS_INSTALL_SCRIPT.lines.map(&:strip).each { |i| run i }
-      doctor "mas"
     end
 
     desc "hint", "문제에 대한 힌트"
