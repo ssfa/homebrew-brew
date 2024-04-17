@@ -156,7 +156,6 @@ module SetupMac
       installed = `brew list`.split
       installs = (ENV_APPS + CUI_APPS - installed)
       installs.each { |i| run "brew install #{i}" }
-      run "brew install --HEAD goenv"
       installs.include?(' gitmoji ') && run("NODE_TLS_REJECT_UNAUTHORIZED=0 gitmoji -l > /dev/null 2>&1")
 
       %w[.zshrc .vimrc].each { |i| install_home(i) }
