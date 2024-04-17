@@ -11,7 +11,7 @@ TS = Time.now
 module SetupMac
   module Helper
     ENV_APPS = Set[*%w[direnv nodenv rbenv pyenv pyenv-virtualenv]].to_a
-    CUI_APPS = Set[*%w[coreutils git ripgrep fzf gh jq bat rb features tldr starship git-flow-avh gitmoji git-lfs openjdk colordiff kubernetes-cli kube-score k9s tree]].to_a
+    CUI_APPS = Set[*%w[coreutils git ripgrep fzf gh jq bat rb features tldr starship git-flow-avh gitmoji git-lfs openjdk colordiff kubernetes-cli kube-score k9s tree tig]].to_a
 
     CASK_APPS = {
       # uncategory
