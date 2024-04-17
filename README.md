@@ -1,9 +1,5 @@
 # Introduce
 
-개발 필요 기본 도구들
-
-# 기본 사용법
-
 ```shell
 brew tap ssfa/brew
 brew install setup-mac
@@ -12,32 +8,63 @@ setup-mac setup_terminal
 setup-mac install_gui_apps  
 ```
 
-# Development
+# Development Tip
+
+## 인증
+
+### 방법1
+
+```shell
+gh auth login
+brew tap ssfa/brew
+```
+
+### 방법2
+
+[Using a personal access token on the command line](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
+
+```shell
+$ git clone https://github.com/USERNAME/REPO.git
+Username: YOUR_USERNAME
+Password: YOUR_PERSONAL_ACCESS_TOKEN
+brew tap ssfa/brew
+```
+
+### Github 로그인 삭제
+
+```shell
+echo -e "protocol=https\nhost=github.com" | git credential-store erase
+```
+
+## 로컬 패스를 tap 으로 할수 있다.
+
+```shell 
+brew untap ssfa/brew
+brew tap ssfa/brew `pwd`
+```
 
 ## Documentaiton
- * [Ruby Programming Language](https://www.ruby-lang.org/en/)
-   * [Thor is a toolkit for building powerful command-line interfaces.](https://github.com/erikhuda/thor)
- * [Homebrew Documentation](https://docs.brew.sh/)
-   * [Taps (Third-Party Repositories)](https://docs.brew.sh/Taps)
+
+* [Ruby Programming Language](https://www.ruby-lang.org/en/) 
+* [Thor is a toolkit for building powerful command-line interfaces.](https://github.com/erikhuda/thor)
+* [Homebrew Documentation](https://docs.brew.sh/)
+    * [Taps (Third-Party Repositories)](https://docs.brew.sh/Taps)
 
 ## 특이사항
- * brew 의 특성상, 원격 저장소의 프로그램을 설치할수 있지만, 분리하면 복잡하여, [lib](./lib) 의 라이브러리들을 이용해서 해결한다.
 
-## using pry
-```shell
-brew config | rg ruby
-# cd 루비 패스로 이동
-./gem install pry
-# Formula 에서 require 'pry';binding.pry 이용 디버깅
-
-brew irb --pry
-```
 
 ## Issues
 
- * zsh 에서 커멘드 확인 후 가장 빠르게 설치하는 방법
- * [Speed Test: Check the Existence of a Command in Bash and Zsh - Top Bug Net](https://www.topbug.net/blog/2016/10/11/speed-test-check-the-existence-of-a-command-in-bash-and-zsh/)
+* zsh 에서 커멘드 확인 후 가장 빠르게 설치하는 방법
+* [Speed Test: Check the Existence of a Command in Bash and Zsh - Top Bug Net](https://www.topbug.net/blog/2016/10/11/speed-test-check-the-existence-of-a-command-in-bash-and-zsh/)
 
 ```shell
 for i in direnv goenv nodenv rbenv; do; (( $+commands[$i] )) || brew install $i; done
+```
+
+# Development
+
+```shell
+brew tap --force homebrew/core
+brew tap ssfa/brew `pwd`
 ```

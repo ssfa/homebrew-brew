@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
-require_relative '../lib/thor_script_install_helper'
+require_relative '../lib/ssfa/thor_script_install_helper'
 
 class SetupMac < Formula
-  include ThorScriptInstallHelper
+  include Ssfa::ThorScriptInstallHelper
   version '0.0.1'
 
-  # url "git@github.com:dxmhq/homebrew-brew.git", using: :git, branch: 'feature/1'
-  command 'setup-mac'
+  command = 'setup-mac'
 
   desc "기본 개발자 환경을 구성한다."
 

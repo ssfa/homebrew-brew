@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require_relative '../lib/thor_script_install_helper'
+require_relative '../lib/ssfa/thor_script_install_helper'
 
 class WorksAlias < Formula
   include ThorScriptInstallHelper
