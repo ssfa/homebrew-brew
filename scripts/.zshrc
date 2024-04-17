@@ -1,4 +1,4 @@
-# version:20220201
+# version:20240417
 
 [ `uname` = 'Linux' ] && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 [ `uname` = 'Darwin' ] && [[ -f /usr/local/bin/brew ]] && eval $(/usr/local/bin/brew shellenv)
@@ -20,8 +20,8 @@ zinit wait lucid for \
   OMZL::misc.zsh       OMZL::theme-and-appearance.zsh \
   agkozak/zsh-z \
   OMZP::fzf/fzf.plugin.zsh \
-  OMZP::colored-man-pages/colored-man-pages.plugin.zsh \
-  OMZP::kubectl/kubectl.plugin.zsh
+  OMZP::colored-man-pages/colored-man-pages.plugin.zsh
+# OMZP::kubectl/kubectl.plugin.zsh
 
 zinit wait lucid for \
  atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
@@ -46,13 +46,13 @@ export PATH="$HOME/.cargo/bin:$PATH"
 eval "$(starship init zsh)"
 
 # async evals
-SNIPPET_FILE=$HOME/.zinit.evals.20220201.zsh
+SNIPPET_FILE=$HOME/.zinit.evals.20240417.zsh
 if [ ! -f $SNIPPET_FILE ]; then
 cat <<-EOF > $SNIPPET_FILE
 eval "\$(direnv hook zsh)"
 eval "\$(nodenv init -)"
-eval "\$(pyenv init -)"
-eval "\$(pyenv virtualenv-init -)"
+# eval "\$(pyenv init -)"
+# eval "\$(pyenv virtualenv-init -)"
 eval "\$(goenv init -)"
 eval "\$(rbenv init -)"
 eval "\$(features init -)"
