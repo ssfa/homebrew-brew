@@ -2,9 +2,8 @@
 require_relative '../lib/ssfa/thor_script_install_helper'
 
 class WorksAlias < Formula
-  include ThorScriptInstallHelper
+  include Ssfa::ThorScriptInstallHelper
   desc "$HOME/works 내의 디렉토리들에 대한 순회 및 자동 완성"
-  command 'works-alias'
   version '0.0.2'
 
   private
