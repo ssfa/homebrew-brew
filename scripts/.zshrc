@@ -31,6 +31,7 @@ zinit wait lucid for \
  atload"!_zsh_autosuggest_start" \
     zsh-users/zsh-autosuggestions
 
+export SCM_BREEZE_DISABLE_ASSETS_MANAGEMENT="true"
 zinit light scmbreeze/scm_breeze
 
 # Env
