@@ -60,7 +60,7 @@ eval "\$(features init -)"
 EOF
 fi
 zinit wait lucid for is-snippet $SNIPPET_FILE
-export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+#export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=50000
