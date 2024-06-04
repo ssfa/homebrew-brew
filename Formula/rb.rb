@@ -1,5 +1,5 @@
 # frozen_string_literal: true
- 
+
 require_relative '../lib/ssfa/ruby_script_install_helper'
 
 class Rb < Formula
@@ -12,8 +12,7 @@ class Rb < Formula
     ENV['GEM_HOME'] = libexec
     system "gem", "install", '--no-document', "amazing_print"
     system "gem", "install", '--no-document', "table_print"
-    
+
     install_command
   end
 end
-
