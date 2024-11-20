@@ -50,11 +50,11 @@ module SetupMac
     }
 
     FONTS = Set[
-      'homebrew/cask-fonts/font-d2coding',
-      'homebrew/cask-fonts/font-jetbrains-mono',
-      'homebrew/cask-fonts/font-fira-code-nerd-font',
-      'homebrew/cask-fonts/font-monaspace',
-      'homebrew/cask-fonts/font-monaspace-nerd-font',
+      'font-d2coding',
+      'font-jetbrains-mono',
+      'font-fira-code-nerd-font',
+      'font-monaspace',
+      'font-monaspace-nerd-font',
     ].to_a
 
     GUI_APPS = CASK_APPS.keys
