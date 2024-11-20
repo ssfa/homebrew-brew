@@ -45,17 +45,14 @@ alias l='ll'
 export PATH="$HOME/.cargo/bin:$PATH"
 
 eval "$(starship init zsh)"
+eval "$(mise activate zsh)"
+eval "$(mise activate zsh --shims)"
 
 # async evals
 SNIPPET_FILE=$HOME/.zinit.evals.20240417.zsh
 if [ ! -f $SNIPPET_FILE ]; then
 cat <<-EOF > $SNIPPET_FILE
 eval "\$(direnv hook zsh)"
-eval "\$(nodenv init -)"
-# eval "\$(pyenv init -)"
-# eval "\$(pyenv virtualenv-init -)"
-eval "\$(goenv init -)"
-eval "\$(rbenv init -)"
 eval "\$(features init -)"
 EOF
 fi

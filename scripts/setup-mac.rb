@@ -10,7 +10,7 @@ require 'rouge'
 TS = Time.now
 module SetupMac
   module Helper
-    ENV_APPS = Set[*%w[direnv nodenv rbenv pyenv pyenv-virtualenv]].to_a
+    ENV_APPS = Set[*%w[direnv mise]].to_a
     CUI_APPS = Set[*%w[coreutils git ripgrep fzf gh jq bat rb features tldr starship git-flow-avh gitmoji git-lfs openjdk colordiff kubernetes-cli kube-score k9s tree tig]].to_a
 
     CASK_APPS = {
@@ -21,7 +21,7 @@ module SetupMac
       'dash' => '개발자 문서 도구',
       'bloomrpc' => 'grpc client',
       'altair-graphql-client' => 'Grpahql client',
-      'insomnia' => 'rest client',
+      'yaak' => 'gui rest client',
       'google-drive' => 'Google Drive',
       '1password' => '1password',
       # browser
@@ -218,4 +218,3 @@ rescue SetupMac::CLI::Error => err
   puts "ERROR: #{err.message}"
   exit 1
 end
-
