@@ -43,6 +43,8 @@ module SetupMac
       # chat
       'discord' => 'Voice and text chat software',
       'mattermost' => 'Open-source, self-hosted Slack-alternative',
+      'maccy' => 'Clipboard manager',
+      'jordanbaird-ice' => 'menubar manager',
     }
 
     CASK_VERSION_APPS = {
@@ -207,6 +209,13 @@ module SetupMac
         puts v[:template] % (apps * ', ')
         apps.each { |i| run(v[:install_template] % i.to_s) } if STDIN.gets.downcase.strip.then { |o| ['y', ''].include? o }
       end
+    end
+
+    desc "setup_git EMAIL USERNAME", "git의 email과 username을 설정합니다."
+    def setup_git(email, username)
+      run "git config --global user.email \"#{email}\""
+      run "git config --global user.name \"#{username}\""
+      puts Rainbow("Git 설정이 완료되었습니다: email=#{email}, username=#{username}").green
     end
 
   end
