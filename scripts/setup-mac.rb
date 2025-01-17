@@ -15,7 +15,8 @@ module SetupMac
 
     CASK_APPS = {
       # uncategory
-      'docker' => 'docker desktop',
+      #'docker' => 'docker desktop',
+      'orbstack' => 'Docker Desktop 대체제',
       'notion' => 'Notion 데스크탑',
       'iterm2' => '가장 많이 쓰이는 터미널 소프트웨어',
       'dash' => '개발자 문서 도구',
@@ -33,7 +34,7 @@ module SetupMac
       'microsoft-office' => 'MS Office',
       # windows util
       'alt-tab' => 'Windows-like alt-tab',
-      'hiddenbar' => 'Utility to hide menu bar items',
+      #'hiddenbar' => 'Utility to hide menu bar items',
       'amethyst' => 'Automatic tiling window manager similar to xmonad',
       'rectangle' => 'Move and resize windows using keyboard shortcuts or snap areas',
       # bar util

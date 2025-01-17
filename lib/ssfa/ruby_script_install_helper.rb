@@ -6,7 +6,7 @@ module Ssfa
   # 현재 Formula 의 scripts 폴더의 툴들 설치를 지원한다.
   module RubyScriptInstallHelper extend Ssfa::Concern
 
-    RUBY = 'ruby@3.2'
+    RUBY = 'ruby@3.3'
 
     included do
       homepage(Dir.chdir(__dir__) { url = `git remote get-url origin`.strip; /https/ =~ url ? url : "https://github.com/#{url.split('.com:').last}" })
