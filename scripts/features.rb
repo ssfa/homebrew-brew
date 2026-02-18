@@ -175,7 +175,15 @@ module Features
         command -v fa > /dev/null  || alias fa="features info --remote $@"
         command -v fl > /dev/null  || alias fl="features issue_list $@"
         command -v fsw > /dev/null || alias fsw="git switch \\`features info | fzf --ansi -q open | head -1 | awk '{print \\$1}'\\`"
-        command -v ft > /dev/null  || alias ft="features current_issue_title | sed -E 's/ open$//' | tr -d '\\n' | pbcopy"
+        command -v ft > /dev/null  || alias ft="features current_issue_title | sed -E 's/ open$//' | sed -E 's/^/🔀 /' | tr -d '\\n' | pbcopy"
+        command -v fm > /dev/null  || alias fm="features info && ft && git switch main && git merge - && git commit -am \\"\\`pbpaste\\`\\" # 머지하기 (fm) 
+
+        command -v f_title > /dev/null     || alias ft="features current_issue_title | sed -E 's/ open$//' | sed -E 's/^/🔀 /' | tr -d '\\n' | pbcopy # 머지할 제목 출력(ft)"
+        command -v f_switch > /dev/null    || alias f_switch="git switch \\`features info | fzf --ansi -q open | head -1 | awk '{print \\$1}'\\`"
+        command -v f_create_pr > /dev/null || alias f_create_pr="gh pr create -a '@me' -t \\"\\`features current_issue_title\\`\\" # pr 생성 (fpr)"
+        command -v f_clean > /dev/null     || alias f_clean="features clean"
+        command -v f_merge > /dev/null     || alias f_merge="features info && ft && git switch main && git merge - && git commit -am \\"\\`pbpaste\\`\\" # 머지하기 (fm) 
+
         fn f_list_aliases() { alias | grep "$*" --color=never | sed -e 's/alias //' -e "s/=/::/" -e "s/'//g" | awk -F "::" '{ printf "\\033[1;36m%15s  \\033[2;37m=>\\033[0m  %-8s\\n",$1,$2}'; }
         fn features_aliaes(){ f_list_aliases features }
       SHELL
