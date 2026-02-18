@@ -10,8 +10,8 @@ require 'rouge'
 TS = Time.now
 module SetupMac
   module Helper
-    ENV_APPS = Set[*%w[direnv mise]].to_a
-    CUI_APPS = Set[*%w[coreutils git ripgrep fzf gh jq bat rb features tldr starship git-flow-avh gitmoji git-lfs openjdk colordiff kubernetes-cli kube-score k9s tree tig]].to_a
+    ENV_APPS = Set[*%w[mise]].to_a.freeze
+    CUI_APPS = Set[*%w[coreutils git git-lfs ripgrep fzf gh jq bat rb features tlrc starship gitmoji colordiff kubernetes-cli kube-score k9s tree tig chatgpt claude-code]].to_a.freeze
 
     CASK_APPS = {
       # uncategory
@@ -22,20 +22,18 @@ module SetupMac
       'dash' => '개발자 문서 도구',
       'bloomrpc' => 'grpc client',
       'altair-graphql-client' => 'Grpahql client',
-      'yaak' => 'gui rest client',
       'google-drive' => 'Google Drive',
       '1password' => '1password',
       # browser
       'google-chrome' => '크롬',
-      'firefox' => '파폭',
+      'zen' => 'Zen',
       # editor
       'jetbrains-toolbox' => 'jetbrains 툴 설치 및 업데이트 관리',
       'visual-studio-code' => 'Visual Studio Code',
-      'microsoft-office' => 'MS Office',
       # windows util
       'alt-tab' => 'Windows-like alt-tab',
       #'hiddenbar' => 'Utility to hide menu bar items',
-      'amethyst' => 'Automatic tiling window manager similar to xmonad',
+      # 'amethyst' => 'Automatic tiling window manager similar to xmonad',
       'rectangle' => 'Move and resize windows using keyboard shortcuts or snap areas',
       # bar util
       'itsycal' => 'calendar',
@@ -45,11 +43,11 @@ module SetupMac
       'discord' => 'Voice and text chat software',
       'mattermost' => 'Open-source, self-hosted Slack-alternative',
       'maccy' => 'Clipboard manager',
-      'jordanbaird-ice' => 'menubar manager',
+      'jordanbaird-ice@beta' => 'menubar manager',
     }
 
     CASK_VERSION_APPS = {
-      'google-chrome-beta' => '크롬',
+      # 'google-chrome-beta' => '크롬',
     }
 
     FONTS = Set[
@@ -213,6 +211,7 @@ module SetupMac
     end
 
     desc "setup_git EMAIL USERNAME", "git의 email과 username을 설정합니다."
+
     def setup_git(email, username)
       run "git config --global user.email \"#{email}\""
       run "git config --global user.name \"#{username}\""
