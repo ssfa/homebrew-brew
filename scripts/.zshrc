@@ -1,4 +1,4 @@
-# version:20240417
+# version:20260218
 
 [ `uname` = 'Linux' ] && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 [ `uname` = 'Darwin' ] && [[ -f /usr/local/bin/brew ]] && eval $(/usr/local/bin/brew shellenv)
@@ -49,10 +49,10 @@ eval "$(mise activate zsh)"
 eval "$(mise activate zsh --shims)"
 
 # async evals
-SNIPPET_FILE=$HOME/.zinit.evals.20240417.zsh
+SNIPPET_FILE=$HOME/.zinit.evals.20260218.zsh
 if [ ! -f $SNIPPET_FILE ]; then
 cat <<-EOF > $SNIPPET_FILE
-eval "\$(direnv hook zsh)"
+# eval "\$(direnv hook zsh)"
 eval "\$(features init -)"
 EOF
 fi
