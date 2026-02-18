@@ -4,7 +4,8 @@ require_relative './concern'
 
 module Ssfa
   # 현재 Formula 의 scripts 폴더의 툴들 설치를 지원한다.
-  module RubyScriptInstallHelper extend Ssfa::Concern
+  module RubyScriptInstallHelper
+    extend Ssfa::Concern
 
     RUBY = 'ruby@3.4'
 
