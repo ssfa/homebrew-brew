@@ -8,6 +8,7 @@ class Features < Formula
   homepage "https://github.com/ssfa/ssfa-tools"
   url "https://github.com/ssfa/ssfa-tools", using: :git, branch: 'main'
 
+  version "0.1.0"
   depends_on 'gh'
   depends_on 'ruby@3.4'
 
