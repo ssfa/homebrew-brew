@@ -5,7 +5,7 @@ require_relative './concern'
 
 module Ssfa
   # gem 빌드 지원
-  module RubyScriptInstallHelper
+  module BrewRubyHelper
     extend Ssfa::Concern
 
     RUBY = 'ruby@3.4'
