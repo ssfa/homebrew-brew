@@ -17,8 +17,8 @@ class Features < Formula
 
     ENV['GEM_HOME'] = libexec
     Dir.chdir(command) do
-      run_yellow_cmd("#{gem_path} build #{command}.gemspec --output=#{command}.gem")
-      run_yellow_cmd("#{gem_path} install --no-document #{command}.gem")
+      run_yellow_cmd("#{gem_exec} build #{command}.gemspec --output=#{command}.gem")
+      run_yellow_cmd("#{gem_exec} install --no-document #{command}.gem")
     end
     bin.install(libexec / "bin/#{command}")
     bin.env_script_all_files(libexec / "bin", GEM_HOME: libexec, PATH: "#{ruby_bin}:$PATH")
