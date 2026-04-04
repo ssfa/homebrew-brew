@@ -11,7 +11,7 @@ TS = Time.now
 module SetupMac
   module Helper
     ENV_APPS = Set[*%w[mise]].to_a.freeze
-    CUI_APPS = Set[*%w[coreutils git git-lfs ripgrep fzf gh jq bat rb features tlrc starship gitmoji colordiff kubernetes-cli kube-score k9s tree tig chatgpt claude-code]].to_a.freeze
+    CUI_APPS = Set[*%w[coreutils git git-lfs ripgrep fzf gh jq bat rb features tlrc starship gitmoji colordiff kubernetes-cli kube-score k9s tree tig chatgpt claude-code zellij]].to_a.freeze
 
     CASK_APPS = {
       # uncategory
@@ -21,7 +21,6 @@ module SetupMac
       'iterm2' => '가장 많이 쓰이는 터미널 소프트웨어',
       'dash' => '개발자 문서 도구',
       'claude' => '개발자 문서 도구',
-      'bloomrpc' => 'grpc client',
       'altair-graphql-client' => 'Grpahql client',
       'google-drive' => 'Google Drive',
       '1password' => '1password',
@@ -53,6 +52,8 @@ module SetupMac
       'mattermost' => 'Open-source, self-hosted Slack-alternative',
       'maccy' => 'Clipboard manager',
       'jordanbaird-ice@beta' => 'menubar manager',
+
+
     }
 
     CASK_VERSION_APPS = {
