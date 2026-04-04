@@ -20,25 +20,34 @@ module SetupMac
       'notion' => 'Notion 데스크탑',
       'iterm2' => '가장 많이 쓰이는 터미널 소프트웨어',
       'dash' => '개발자 문서 도구',
+      'claude' => '개발자 문서 도구',
       'bloomrpc' => 'grpc client',
       'altair-graphql-client' => 'Grpahql client',
       'google-drive' => 'Google Drive',
       '1password' => '1password',
+      'linear' => 'linear',
+
       # browser
       'google-chrome' => '크롬',
-      'zen' => 'Zen',
+      'firefox' => 'firefox',
+      'arc' => 'arc',
+
       # editor
       'jetbrains-toolbox' => 'jetbrains 툴 설치 및 업데이트 관리',
       'visual-studio-code' => 'Visual Studio Code',
+
       # windows util
       'alt-tab' => 'Windows-like alt-tab',
+
       #'hiddenbar' => 'Utility to hide menu bar items',
       # 'amethyst' => 'Automatic tiling window manager similar to xmonad',
       'rectangle' => 'Move and resize windows using keyboard shortcuts or snap areas',
+
       # bar util
       'itsycal' => 'calendar',
       'keepingyouawake' => 'Tool to prevent the system from going into sleep mode',
       'monitorcontrol' => '외장 모니터 밝기 조절, 볼륨 조정',
+
       # chat
       'discord' => 'Voice and text chat software',
       'mattermost' => 'Open-source, self-hosted Slack-alternative',

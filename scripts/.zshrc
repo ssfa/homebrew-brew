@@ -1,4 +1,4 @@
-# version:20260218
+# version:20260405
 
 [ `uname` = 'Linux' ] && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 [ `uname` = 'Darwin' ] && [[ -f /usr/local/bin/brew ]] && eval $(/usr/local/bin/brew shellenv)
@@ -31,8 +31,10 @@ zinit wait lucid for \
  atload"!_zsh_autosuggest_start" \
     zsh-users/zsh-autosuggestions
 
-export SCM_BREEZE_DISABLE_ASSETS_MANAGEMENT="true"
-zinit light scmbreeze/scm_breeze
+if [[ -z "$CLAUDE_PROJECT_DIR" ]]; then
+  export SCM_BREEZE_DISABLE_ASSETS_MANAGEMENT="true"
+  zinit light scmbreeze/scm_breeze
+fi
 
 # Env
 export EDITOR=vim
@@ -40,7 +42,6 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 # Utilities
-alias cat='bat'
 alias l='ll'
 export PATH="$HOME/.cargo/bin:$PATH"
 
