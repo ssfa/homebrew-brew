@@ -58,9 +58,6 @@ brew tap ssfa/brew `pwd`
 * zsh 에서 커멘드 확인 후 가장 빠르게 설치하는 방법
 * [Speed Test: Check the Existence of a Command in Bash and Zsh - Top Bug Net](https://www.topbug.net/blog/2016/10/11/speed-test-check-the-existence-of-a-command-in-bash-and-zsh/)
 
-```shell
-for i in direnv goenv nodenv rbenv; do; (( $+commands[$i] )) || brew install $i; done
-```
 
 # Development
 

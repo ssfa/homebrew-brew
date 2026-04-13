@@ -31,6 +31,19 @@ brew install --verbose --debug <formula-name>
 
 설치 흐름: Formula가 헬퍼를 include → 헬퍼가 `scripts/`의 스크립트를 Homebrew bin으로 복사 → gem 환경 및 셸 자동 완성 설정.
 
+## Git 커밋 규칙
+
+커밋 메시지는 [gitmoji](https://gitmoji.dev/) 스타일을 사용한다. 메시지 앞에 적절한 이모지를 붙인다. 이모지는 unicode 로 붙인다. 
+
+예시:
+- ✨ 새 기능 추가
+- 🐛 버그 수정
+- 🔧 설정 파일 변경
+- 📝 문서 수정
+- ♻️ 리팩토링
+- 🚑 긴급 수정
+- ✏️ 오타 수정
+
 ## 새 Formula 추가
 
 1. `scripts/<command>.rb`에 스크립트 배치

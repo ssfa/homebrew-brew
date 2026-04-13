@@ -31,7 +31,7 @@ zinit wait lucid for \
  atload"!_zsh_autosuggest_start" \
     zsh-users/zsh-autosuggestions
 
-if [[ -z "$CLAUDE_PROJECT_DIR" ]]; then
+if [[ -o interactive ]] && [[ -z "$CLAUDE_CODE_SSE_PORT" ]] ; then
   export SCM_BREEZE_DISABLE_ASSETS_MANAGEMENT="true"
   zinit light scmbreeze/scm_breeze
 fi
