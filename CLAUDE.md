@@ -43,6 +43,7 @@ brew install --verbose --debug <formula-name>
 - ♻️ 리팩토링
 - 🚑 긴급 수정
 - ✏️ 오타 수정
+- ⚙️ 설정 변경
 
 ## 새 Formula 추가
 
