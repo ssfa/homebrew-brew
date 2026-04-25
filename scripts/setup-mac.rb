@@ -25,6 +25,7 @@ module SetupMac
       'google-drive' => 'Google Drive',
       '1password' => '1password',
       'linear' => 'linear',
+      'codex-app' => 'Codex 앱',
 
       # browser
       'google-chrome' => '크롬',
