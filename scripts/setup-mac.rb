@@ -26,7 +26,9 @@ module SetupMac
       '1password' => '1password',
       'linear-linear' => 'linear',
       'codex-app' => 'Codex 앱',
-
+      'gureumkim' => '구름 입력기',
+      'yacreader' => 'yacreader',
+      
       # browser
       'google-chrome' => '크롬',
       'firefox' => 'firefox',
@@ -52,8 +54,7 @@ module SetupMac
       'discord' => 'Voice and text chat software',
       'mattermost' => 'Open-source, self-hosted Slack-alternative',
       'maccy' => 'Clipboard manager',
-      'jordanbaird-ice@beta' => 'menubar manager',
-      'gureumkim' => '구름 입력기'
+      'jordanbaird-ice@beta' => 'menubar manager'
     }
 
     CASK_VERSION_APPS = {
@@ -65,7 +66,7 @@ module SetupMac
       'font-jetbrains-mono',
       'font-fira-code-nerd-font',
       'font-monaspace',
-      'font-monaspace-nerd-font',
+      'font-monaspice-nerd-font',
     ].to_a
 
     GUI_APPS = CASK_APPS.keys
