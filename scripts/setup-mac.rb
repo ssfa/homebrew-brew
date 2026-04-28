@@ -24,7 +24,7 @@ module SetupMac
       'altair-graphql-client' => 'Grpahql client',
       'google-drive' => 'Google Drive',
       '1password' => '1password',
-      'linear' => 'linear',
+      'linear-linear' => 'linear',
       'codex-app' => 'Codex 앱',
 
       # browser
