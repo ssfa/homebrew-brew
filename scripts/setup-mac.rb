@@ -53,8 +53,7 @@ module SetupMac
       'mattermost' => 'Open-source, self-hosted Slack-alternative',
       'maccy' => 'Clipboard manager',
       'jordanbaird-ice@beta' => 'menubar manager',
-
-
+      'gureumkim' => '구름 입력기'
     }
 
     CASK_VERSION_APPS = {
