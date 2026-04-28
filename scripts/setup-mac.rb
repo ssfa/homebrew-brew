@@ -54,7 +54,9 @@ module SetupMac
       'discord' => 'Voice and text chat software',
       'mattermost' => 'Open-source, self-hosted Slack-alternative',
       'maccy' => 'Clipboard manager',
-      'jordanbaird-ice@beta' => 'menubar manager'
+      'jordanbaird-ice@beta' => 'menubar manager',
+
+      'iina' => 'iina player'
     }
 
     CASK_VERSION_APPS = {
