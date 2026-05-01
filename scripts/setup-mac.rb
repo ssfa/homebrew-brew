@@ -24,7 +24,7 @@ module SetupMac
       'altair-graphql-client' => 'Grpahql client',
       'google-drive' => 'Google Drive',
       '1password' => '1password',
-      'linear-linear' => 'linear',
+      'linear' => 'linear',
       'codex-app' => 'Codex 앱',
       'gureumkim' => '구름 입력기',
       'yacreader' => 'yacreader',
@@ -37,6 +37,7 @@ module SetupMac
       # editor
       'jetbrains-toolbox' => 'jetbrains 툴 설치 및 업데이트 관리',
       'visual-studio-code' => 'Visual Studio Code',
+      'zed' => 'zed editor',
 
       # windows util
       'alt-tab' => 'Windows-like alt-tab',
