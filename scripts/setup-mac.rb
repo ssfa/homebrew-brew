@@ -19,13 +19,10 @@ module SetupMac
       'orbstack' => 'Docker Desktop 대체제',
       'notion' => 'Notion 데스크탑',
       'iterm2' => '가장 많이 쓰이는 터미널 소프트웨어',
-      'dash' => '개발자 문서 도구',
-      'claude' => '개발자 문서 도구',
-      'altair-graphql-client' => 'Grpahql client',
       'google-drive' => 'Google Drive',
       '1password' => '1password',
-      'linear' => 'linear',
       'codex-app' => 'Codex 앱',
+      'claude' => '개발자 도구',
       'gureumkim' => '구름 입력기',
       'yacreader' => 'yacreader',
       
@@ -35,12 +32,8 @@ module SetupMac
       'arc' => 'arc',
 
       # editor
-      'jetbrains-toolbox' => 'jetbrains 툴 설치 및 업데이트 관리',
-      'visual-studio-code' => 'Visual Studio Code',
+      'vscodium' => 'codium',
       'zed' => 'zed editor',
-
-      # windows util
-      'alt-tab' => 'Windows-like alt-tab',
 
       #'hiddenbar' => 'Utility to hide menu bar items',
       # 'amethyst' => 'Automatic tiling window manager similar to xmonad',
@@ -58,10 +51,6 @@ module SetupMac
       'jordanbaird-ice@beta' => 'menubar manager',
 
       'iina' => 'iina player'
-    }
-
-    CASK_VERSION_APPS = {
-      # 'google-chrome-beta' => '크롬',
     }
 
     FONTS = Set[
@@ -185,7 +174,6 @@ module SetupMac
 
     def install_gui_apps
       GUI_APPS.each { |i| run "brew install --cask %s" % i }
-      CASK_VERSION_APPS.each { |i| run "brew install --cask /homebrew/cask-versions/%s" % i }
       FONTS.each { |i| run "brew install %s" % i }
       doctor "gui"
     end
