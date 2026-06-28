@@ -11,7 +11,7 @@ TS = Time.now
 module SetupMac
   module Helper
     ENV_APPS = Set[*%w[mise]].to_a.freeze
-    CUI_APPS = Set[*%w[coreutils git git-lfs ripgrep fzf gh jq bat rb features tlrc starship gitmoji colordiff kubernetes-cli kube-score k9s tree tig chatgpt claude-code zellij]].to_a.freeze
+    CUI_APPS = Set[*%w[coreutils git git-lfs ripgrep fzf gh jq bat rb tlrc starship gitmoji colordiff tree tig chatgpt claude-code zellij herdr tmuxinator]].to_a.freeze
 
     CASK_APPS = {
       # uncategory
