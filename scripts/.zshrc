@@ -1,4 +1,4 @@
-# version:20260405
+# version:20260629
 
 [ `uname` = 'Linux' ] && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 [ `uname` = 'Darwin' ] && [[ -f /usr/local/bin/brew ]] && eval $(/usr/local/bin/brew shellenv)
@@ -50,14 +50,12 @@ eval "$(mise activate zsh)"
 eval "$(mise activate zsh --shims)"
 
 # async evals
-SNIPPET_FILE=$HOME/.zinit.evals.20260218.zsh
-if [ ! -f $SNIPPET_FILE ]; then
-cat <<-EOF > $SNIPPET_FILE
-# eval "\$(direnv hook zsh)"
-eval "\$(features init -)"
-EOF
-fi
-zinit wait lucid for is-snippet $SNIPPET_FILE
+# SNIPPET_FILE=$HOME/.zinit.evals.20260218.zsh
+# if [ ! -f $SNIPPET_FILE ]; then
+# cat <<-EOF > $SNIPPET_FILE
+# EOF
+# fi
+# zinit wait lucid for is-snippet $SNIPPET_FILE
 #export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 
 HISTFILE="$HOME/.zsh_history"
